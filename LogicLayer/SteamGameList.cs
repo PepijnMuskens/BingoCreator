@@ -11,25 +11,29 @@ namespace LogicLayer
     public class SteamGameList
     {
         public List<SteamGame> SteamGames { get; set; }
-        private ISteamGame ISteamGame { get; set; }
+        private ISteamGames ISteamGames { get; set; }
         public SteamGameList()
         {
             SteamGames = new List<SteamGame>();
-            ISteamGame = new SteamGameDAL();
+            ISteamGames = new SteamGameDAL();
         }
 
         public List<SteamGame> GetAllSteamGames()
         {
-            foreach(SteamGameDTO steamGameDTO in ISteamGame.GetGamesAll())
+            foreach(SteamGameDTO steamGameDTO in ISteamGames.GetGamesAll())
             {
                 SteamGames.Add(new SteamGame(steamGameDTO));
             }
             return SteamGames;
         }
+        public SteamGame GetSteamGame(int id)
+        {
+            return new SteamGame(ISteamGames.GetSteamgame(id));
+        }
 
         public int AddSteamGame(int id, string name)
         {
-            return ISteamGame.AddGame(new SteamGameDTO { SteamId = id, Name = name });
+            return ISteamGames.AddGame(new SteamGameDTO { SteamId = id, Name = name });
         } 
     }
 }

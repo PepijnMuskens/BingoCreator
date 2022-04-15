@@ -8,8 +8,10 @@ namespace InterfaceLayer.DTO_s
 {
     public class ChallengeListDTO
     {
-        public string Name { get; private set; }
-        public int MaxCardSize { get; private set; }
-        public List<ChallengeDTO> Challenges { get; private set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public int Gameid { get; set; }
+        public int MaxCardSize { get; set; }
+        public List<ChallengeDTO> Challenges { get; set; }
     }
 }

@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 using InterfaceLayer.DTO_s;
 namespace InterfaceLayer.Interfaces
 {
-    public interface ISteamGame
+    public interface ISteamGames
     {
-        public List<ChallengeDTO> GetChallenges(int id);
-        
+        public List<SteamGameDTO> GetGamesAll();
+        public SteamGameDTO GetSteamgame(int id);
+        public int AddGame(SteamGameDTO game);
     }
 }
