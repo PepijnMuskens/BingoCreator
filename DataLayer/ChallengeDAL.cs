@@ -62,7 +62,7 @@ namespace DataLayer
             try
             {
                 connection.Open();
-                query = $"SELECT * FROM `challengelist` WHERE Id = {id} AND UserId = {userid};";
+                query = $"SELECT challenge.Id, challenge.Discription, challenge.Statname, challenge.Value, challenge.Difficulty, challenge.GameId FROM challengelistchallenge INNER JOIN challenge on challengelistchallenge.challengeId = challenge.Id WHERE challengelistchallenge.Challengelistid = 1; ";
                 var cmd = new MySqlCommand(query,connection);
                 var reader = cmd.ExecuteReader();
                 while (reader.Read())
@@ -78,6 +78,7 @@ namespace DataLayer
             {
                 connection.Close();
             }
+            return challengeList;
         }
 
         

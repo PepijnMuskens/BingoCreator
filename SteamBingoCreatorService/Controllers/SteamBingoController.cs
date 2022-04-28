@@ -44,7 +44,7 @@ namespace SteamBingoCreatorService.Controllers
         }
 
         [HttpPost("AddToChallengeList")]
-        public string Post(string challengesJson, int challengelistid)
+        public string AddtoChallengelist(string challengesJson, int challengelistid)
         {
             try
             {
@@ -52,15 +52,15 @@ namespace SteamBingoCreatorService.Controllers
                 List<Challenge> challenges = JsonSerializer.Deserialize<List<Challenge>>(challengesJson);
                 foreach(Challenge challenge in challenges)
                 {
-                    challenge
+                    
                 }
             }
             catch
             {
                 return "failed";
             }
-            
-            
+            return "failed";
+
         }
 
         [HttpPost("CreateChallengeList")]
@@ -74,7 +74,7 @@ namespace SteamBingoCreatorService.Controllers
         [HttpGet("GetChallengeList")]
         public string GetChallengeList(int id)
         {
-
+            return "";
         }
 
     }
