@@ -9,12 +9,14 @@ namespace LogicLayer
 {
     public class ChallengeList
     {
+        public int Id { get; private set; }
         public string Name { get; private set; }
         public int MaxCardSize { get; private set; }
         public List<Challenge> Challenges { get; private set; }
 
         public ChallengeList(ChallengeListDTO challengeListDTO)
         {
+            Id = challengeListDTO.Id;
             Name = challengeListDTO.Name;
             MaxCardSize = challengeListDTO.MaxCardSize;
             Challenges = new List<Challenge>();

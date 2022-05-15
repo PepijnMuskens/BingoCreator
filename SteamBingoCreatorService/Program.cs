@@ -3,6 +3,14 @@ using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CorsPolicy", builder =>
+    {
+        builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+    });
+});
+
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -25,8 +33,8 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+app.UseCors("CorsPolicy");
 
-app.UseMiddleware<AdminSafeListMiddleware>("::ffff:172.17.0.1;192.168.1.5;::1");
 
 app.Run();
 

@@ -13,5 +13,11 @@ namespace InterfaceLayer.DTO_s
         public int Gameid { get; set; }
         public int MaxCardSize { get; set; }
         public List<ChallengeDTO> Challenges { get; set; }
+
+        public ChallengeListDTO()
+        {
+            Challenges = new List<ChallengeDTO>();
+            Name = "";
+        }
     }
 }

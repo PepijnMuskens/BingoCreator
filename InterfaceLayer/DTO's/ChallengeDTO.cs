@@ -8,6 +8,7 @@ namespace InterfaceLayer.DTO_s
 {
     public struct ChallengeDTO
     {
+        public int Id { get; set; }
         public string Discription { get; set; }
         public string StatName { get; set; }
         public double Value { get; set; }

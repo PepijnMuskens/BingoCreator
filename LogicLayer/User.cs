@@ -27,6 +27,11 @@ namespace LogicLayer
             return IChallengeList.CreateChallengeList(name, Id, gameid);
         }
 
+        public ChallengeList GetChallengeList(int id)
+        {
+            return new ChallengeList(IChallengeList.GetChallengeList(id, Id));
+        }
+
 
     }
 }

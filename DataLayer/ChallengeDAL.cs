@@ -7,7 +7,8 @@ namespace DataLayer
 {
     public class ChallengeDAL : IChallengeList
     {
-        private string connectionString = "server=host.docker.internal;user=root;database=steambingo;port=3306;password='';SslMode=none";
+        //private string connectionString = "server=host.docker.internal;user=root;database=steambingo;port=3306;password='';SslMode=none";
+        private string connectionString = "Server=studmysql01.fhict.local;Uid=dbi437675;Database=dbi437675;Pwd=1234";
         MySqlConnection connection;
         string query = "";
 
@@ -59,17 +60,34 @@ namespace DataLayer
         public ChallengeListDTO GetChallengeList(int id, int userid)
         {
             ChallengeListDTO challengeList = new ChallengeListDTO();
+            challengeList.Id = id;
             try
             {
                 connection.Open();
-                query = $"SELECT challenge.Id, challenge.Discription, challenge.Statname, challenge.Value, challenge.Difficulty, challenge.GameId FROM challengelistchallenge INNER JOIN challenge on challengelistchallenge.challengeId = challenge.Id WHERE challengelistchallenge.Challengelistid = 1; ";
+                query = $"SELECT challengelist.Name, challenge.Id, challenge.Discription, challenge.Statname, challenge.Value, challenge.Difficulty FROM challengelistchallenge INNER JOIN challenge on challengelistchallenge.challengeId = challenge.Id INNER JOIN challengelist on challengelistchallenge.Challengelistid = challengelist.Id WHERE challengelistchallenge.Challengelistid = {id} AND challengelist.UserId = {userid};";
                 var cmd = new MySqlCommand(query,connection);
                 var reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
-                    challengeList.Id = reader.GetInt32(0);
-                    challengeList.Name = reader.GetString(1);
-                    challengeList.Gameid = reader.GetInt32(3);
+                    
+                    challengeList.Name = reader.GetString(reader.GetOrdinal("Name"));
+                    ChallengeDTO challengeDTO = new ChallengeDTO();
+                    challengeDTO.Id = reader.GetInt32(reader.GetOrdinal("Id"));
+                    challengeDTO.Discription = reader.GetString(reader.GetOrdinal("Discription"));
+                    challengeDTO.StatName = reader.GetString(reader.GetOrdinal("Statname"));
+                    challengeDTO.Value = reader.GetDouble(reader.GetOrdinal("Value"));
+                    challengeDTO.Difficulty = reader.GetInt32(reader.GetOrdinal("Difficulty"));
+
+                    challengeDTO.Discription = challengeDTO.Discription.Replace('@', Convert.ToChar((int)challengeDTO.Value + 48));
+                    if (challengeDTO.Value > 1)
+                    {
+                        challengeDTO.Discription = challengeDTO.Discription.Replace('$', 's');
+                    }
+                    else if (challengeDTO.Discription.Contains('$'))
+                    {
+                        challengeDTO.Discription = challengeDTO.Discription.Remove(challengeDTO.Discription.IndexOf('$'), 1);
+                    }
+                    challengeList.Challenges.Add(challengeDTO);
                 }
                 connection.Close();
                 

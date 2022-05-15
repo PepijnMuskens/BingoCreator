@@ -7,14 +7,17 @@ namespace DataLayer
 {
     public class SteamGameDAL : ISteamGame , ISteamGames
     {
-        private string connectionString = "server=host.docker.internal;user=root;database=steambingo;port=3306;password='';SslMode=none";
+        //private string connectionString = "server=host.docker.internal;user=root;database=steambingo;port=3306;password='';SslMode=none";
+        private string connectionString = "Server=studmysql01.fhict.local;Uid=dbi437675;Database=dbi437675;Pwd=1234";
         MySqlConnection connection;
         string query = "";
+
+        ChallengeDAL challengeDAL;
 
         public SteamGameDAL()
         {
             connection = new MySqlConnection(connectionString);
-
+            challengeDAL = new ChallengeDAL();
         }
 
         public int AddGame(SteamGameDTO game)
@@ -49,10 +52,13 @@ namespace DataLayer
                     dTO.ChallengeLists = new List<ChallengeListDTO>();
                 }
                 connection.Close();
+                
+                dTO.Challenges = GetChallenges(id);
+                dTO.ChallengeLists = GetChallengeLists(id);
             }
             catch (Exception ex)
             {
-
+                connection.Close();
             }
             return dTO;
         }
@@ -79,7 +85,7 @@ namespace DataLayer
             }
             catch (Exception ex)
             {
-
+                connection.Close();
             }
             return steamGameDTOs;
         }
@@ -100,16 +106,49 @@ namespace DataLayer
                     dTO.StatName = reader.GetString(2);
                     dTO.Value = reader.GetDouble(3);
                     dTO.Difficulty = reader.GetInt32(4);
-
+                    dTO.Discription = dTO.Discription.Replace('@', Convert.ToChar((int)dTO.Value + 48));
+                    if (dTO.Value > 1)
+                    {
+                        dTO.Discription = dTO.Discription.Replace('$', 's');
+                    }
+                    else if(dTO.Discription.Contains('$'))
+                    {
+                        dTO.Discription = dTO.Discription.Remove(dTO.Discription.IndexOf('$'),1);
+                    }
                     challengeDTOs.Add(dTO);
                 }
                 connection.Close();
             }
             catch (Exception ex)
             {
-
+                connection.Close();
             }
             return challengeDTOs;
+        }
+        public List<ChallengeListDTO> GetChallengeLists(int id)
+        {
+            List<ChallengeListDTO> dtos = new List<ChallengeListDTO>();
+            try
+            {
+                connection.Open();
+                query = $"SELECT * FROM challengelist WHERE GameId = {id}";
+                var cmd = new MySqlCommand(query, connection);
+                var reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    ChallengeListDTO dto = new ChallengeListDTO();
+                    dto.Id = reader.GetInt32(0);
+                    dto.Name = reader.GetString(1);
+
+                    dtos.Add(dto);
+                }
+                connection.Close();
+            }
+            catch (Exception ex)
+            {
+                connection.Close();
+            }
+            return dtos;
         }
     }
 }
