@@ -31,9 +31,9 @@ namespace LogicLayer
             return new SteamGame(ISteamGames.GetSteamgame(id));
         }
 
-        public int AddSteamGame(int id, string name)
+        public SteamGame AddSteamGame(int id, string steamid)
         {
-            return ISteamGames.AddGame(new SteamGameDTO { SteamId = id, Name = name });
+            return new SteamGame(ISteamGames.AddGame(id, steamid));
         } 
     }
 }

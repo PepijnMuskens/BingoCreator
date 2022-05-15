@@ -13,5 +13,7 @@ namespace InterfaceLayer.DTO_s
         public string StatName { get; set; }
         public double Value { get; set; }
         public int Difficulty { get; set; }
+        public int Gameid { get; set; }
+
     }
 }

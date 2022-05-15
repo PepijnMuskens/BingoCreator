@@ -7,15 +7,14 @@ namespace DataLayer
 {
     public class ChallengeDAL : IChallengeList
     {
-        //private string connectionString = "server=host.docker.internal;user=root;database=steambingo;port=3306;password='';SslMode=none";
-        private string connectionString = "Server=studmysql01.fhict.local;Uid=dbi437675;Database=dbi437675;Pwd=1234";
+        private string connectionString = "Server=am1.fcomet.com;Uid=steambin_steambin;Database=steambin_Data;Pwd=Appels1peren0";
+        //private string connectionString = "Server=studmysql01.fhict.local;Uid=dbi437675;Database=dbi437675;Pwd=1234";
         MySqlConnection connection;
         string query = "";
 
         public ChallengeDAL()
         {
             connection = new MySqlConnection(connectionString);
-
         }
 
         public int AddGame(SteamGameDTO game)
@@ -34,9 +33,27 @@ namespace DataLayer
             return 1;
         }
 
-        public int AddToChallengeList(List<ChallengeDTO> challenges, int id)
+        public ChallengeDTO AddtoChallengelist(string disc, string statname, int value, int diff, int gameid)
         {
-            throw new NotImplementedException();
+            ChallengeDTO challenge = new ChallengeDTO();
+            try
+            {
+                connection.Open();
+                query = $"INSERT INTO `challenge`(`Discription`, `Statname`, `Value`, `Difficulty`, `GameId`) VALUES ('{disc}','{statname}',{value},{diff},{gameid})";
+                var cmd = new MySqlCommand(query, connection);
+                cmd.ExecuteNonQuery();
+                connection.Close();
+                challenge.Value = value;
+                challenge.Gameid = gameid;
+                challenge.StatName = statname;
+                challenge.Difficulty = diff;
+                challenge.Discription = disc;
+            }
+            catch
+            {
+                connection.Close();
+            }
+            return challenge;
         }
 
         public int CreateChallengeList(string name, int userid, int gameid)
@@ -64,7 +81,7 @@ namespace DataLayer
             try
             {
                 connection.Open();
-                query = $"SELECT challengelist.Name, challenge.Id, challenge.Discription, challenge.Statname, challenge.Value, challenge.Difficulty FROM challengelistchallenge INNER JOIN challenge on challengelistchallenge.challengeId = challenge.Id INNER JOIN challengelist on challengelistchallenge.Challengelistid = challengelist.Id WHERE challengelistchallenge.Challengelistid = {id} AND challengelist.UserId = {userid};";
+                query = $"SELECT challengelist.Name, challenge.Id, challenge.Discription, challenge.Statname, challenge.Value, challenge.Difficulty, challenge.GameId FROM challengelistchallenge INNER JOIN challenge on challengelistchallenge.challengeId = challenge.Id INNER JOIN challengelist on challengelistchallenge.Challengelistid = challengelist.Id WHERE challengelistchallenge.Challengelistid = {id} AND challengelist.UserId = {userid};";
                 var cmd = new MySqlCommand(query,connection);
                 var reader = cmd.ExecuteReader();
                 while (reader.Read())
@@ -77,6 +94,7 @@ namespace DataLayer
                     challengeDTO.StatName = reader.GetString(reader.GetOrdinal("Statname"));
                     challengeDTO.Value = reader.GetDouble(reader.GetOrdinal("Value"));
                     challengeDTO.Difficulty = reader.GetInt32(reader.GetOrdinal("Difficulty"));
+                    challengeDTO.Gameid = reader.GetInt32(reader.GetOrdinal("GameId"));
 
                     challengeDTO.Discription = challengeDTO.Discription.Replace('@', Convert.ToChar((int)challengeDTO.Value + 48));
                     if (challengeDTO.Value > 1)

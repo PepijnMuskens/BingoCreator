@@ -10,6 +10,6 @@ namespace InterfaceLayer.Interfaces
     {
         public List<SteamGameDTO> GetGamesAll();
         public SteamGameDTO GetSteamgame(int id);
-        public int AddGame(SteamGameDTO game);
+        public SteamGameDTO AddGame(int id, string name);
     }
 }

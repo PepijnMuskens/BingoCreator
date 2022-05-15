@@ -12,6 +12,7 @@ namespace LogicLayer
         public string StatName { get; set; }
         public double Value { get; set; }
         public int Difficulty { get; set; }
+        public int Gameid { get; set; }
 
         public Challenge(ChallengeDTO challengeDTO)
         {
@@ -19,6 +20,7 @@ namespace LogicLayer
             StatName = challengeDTO.StatName;
             Value = challengeDTO.Value;
             Difficulty = challengeDTO.Difficulty;
+            Gameid = challengeDTO.Gameid;
         }
 
     }
