@@ -59,7 +59,7 @@ namespace SteamBingoCreatorService.Controllers
 
         [EnableCors("CorsPolicy")]
         [HttpPost("CreateChallengeList")]
-        public string CreateChallengeList(string name, int gameid, int userid)
+        public string CreateChallengeList(string name, int gameid)
         {
             User user = new User(new InterfaceLayer.DTO_s.UserDTO() { Id = 1, Name = "Pepijn"});
             user.CreateChallengelist(name, gameid);
