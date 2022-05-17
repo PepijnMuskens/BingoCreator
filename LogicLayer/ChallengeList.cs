@@ -13,6 +13,7 @@ namespace LogicLayer
         public int Id { get; private set; }
         public string Name { get; private set; }
         public int MaxCardSize { get; private set; }
+        public int GameId { get;private set; }
         public List<Challenge> Challenges { get; private set; }
         public IChallengeList IChallengelist { get; private set; }
 
@@ -21,6 +22,7 @@ namespace LogicLayer
             Id = challengeListDTO.Id;
             Name = challengeListDTO.Name;
             MaxCardSize = challengeListDTO.MaxCardSize;
+            GameId = challengeListDTO.Gameid;
             Challenges = new List<Challenge>();
             foreach(ChallengeDTO challengeDTO in challengeListDTO.Challenges)
             {
@@ -42,22 +44,14 @@ namespace LogicLayer
             IChallengelist = new DataLayer.ChallengeDAL();
         }
 
-        public int AddChallenge(Challenge challenge)
+        public Challenge AddToChallengeList(int challengelistid, int  challengeid)
         {
-            foreach(Challenge challenge1 in Challenges)
-            {
-                if(challenge1.StatName == challenge.StatName)
-                {
-                    return 0;
-                }
-            }
-            Challenges.Add(challenge);
-            return 1;
+            return new Challenge(IChallengelist.AddToChallengeList(challengelistid, challengeid));
         }
 
-        public async Task<Challenge> AddtoChallengelist(string disc, string statname, int value, int diff, int gameid)
+        public async Task<Challenge> AddChallenge(string disc, string statname, int value, int diff, int gameid)
         {
-            return new Challenge( IChallengelist.AddtoChallengelist(disc, statname, value, diff, gameid));
+            return new Challenge( IChallengelist.AddChallenge(disc, statname, value, diff, gameid));
         }
     }
 }

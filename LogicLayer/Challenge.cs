@@ -8,6 +8,7 @@ namespace LogicLayer
 {
     public class Challenge
     {
+        public int Id { get; set; }
         public string Discription { get; set; }
         public string StatName { get; set; }
         public double Value { get; set; }
@@ -16,6 +17,7 @@ namespace LogicLayer
 
         public Challenge(ChallengeDTO challengeDTO)
         {
+            Id = challengeDTO.Id;
             Discription = challengeDTO.Discription;
             StatName = challengeDTO.StatName;
             Value = challengeDTO.Value;

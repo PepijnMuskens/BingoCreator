@@ -29,32 +29,20 @@ namespace SteamBingoCreatorService.Controllers
         }
 
         [EnableCors("CorsPolicy")]
-        [HttpPost("AddToChallengeList")]
-        public string AddtoChallengelist(string challengesJson, int challengelistid)
-        {
-            try
-            {
-
-                List<Challenge> challenges = JsonSerializer.Deserialize<List<Challenge>>(challengesJson);
-                foreach (Challenge challenge in challenges)
-                {
-
-                }
-            }
-            catch
-            {
-                return "failed";
-            }
-            return "failed";
-
-        }
-        [EnableCors("CorsPolicy")]
         [HttpPost("AddChallenge")]
-        public async Task<Challenge> AddtoChallengelist(string disc, string statname, int value, int diff, int gameid)
+        public async Task<Challenge> AddChallenge(string disc, string statname, int value, int diff, int gameid)
         {
             if (value < 1 || value > 50 || diff > 3 || diff < 1) return null;
             ChallengeList challengeList = new ChallengeList();
-            return await challengeList.AddtoChallengelist(disc, statname, value, diff, gameid);
+            return await challengeList.AddChallenge(disc, statname, value, diff, gameid);
+        }
+
+        [EnableCors("CorsPolicy")]
+        [HttpPost("AddToChallengeList")]
+        public async Task<Challenge> AddToChallengeList(int challengelistid, int challengeid)
+        {
+            ChallengeList challengeList = new ChallengeList();
+            return challengeList.AddToChallengeList(challengelistid, challengeid);
         }
 
         [EnableCors("CorsPolicy")]

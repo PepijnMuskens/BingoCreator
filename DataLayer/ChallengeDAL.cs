@@ -33,7 +33,7 @@ namespace DataLayer
             return 1;
         }
 
-        public ChallengeDTO AddtoChallengelist(string disc, string statname, int value, int diff, int gameid)
+        public ChallengeDTO AddChallenge(string disc, string statname, int value, int diff, int gameid)
         {
             ChallengeDTO challenge = new ChallengeDTO();
             try
@@ -108,7 +108,13 @@ namespace DataLayer
                     challengeList.Challenges.Add(challengeDTO);
                 }
                 connection.Close();
-                
+                connection.Open();
+                query = $"SELECT `GameId` FROM `challengelist` WHERE `Id` = {id} AND `UserId` = {userid}";
+                var cmd2 = new MySqlCommand(query,connection);
+                int gameid = (int)cmd2.ExecuteScalar();
+                challengeList.Gameid = gameid;
+                connection.Close();
+
             }
             catch
             {
@@ -117,6 +123,23 @@ namespace DataLayer
             return challengeList;
         }
 
-        
+        public ChallengeDTO AddToChallengeList(int challengelistid, int challengeid)
+        {
+            ChallengeListDTO challengeList = GetChallengeList(challengelistid, 1);
+            if (challengeList.Challenges.Contains(challengeList.Challenges.Find(c => c.Id == challengeid))) return challengeList.Challenges.Find(c => c.Id == challengeid);
+            try
+            {
+                connection.Open();
+                query = $"INSERT INTO `challengelistchallenge`(`Challengelistid`, `challengeId`) VALUES ({challengelistid},{challengeid})";
+                var cmd = new MySqlCommand(query, connection);
+                cmd.ExecuteNonQuery();
+                connection.Close();
+            }
+            catch (Exception ex)
+            {
+                connection.Close();
+            }
+            return GetChallengeList(challengelistid, 1).Challenges.Find(c => c.Id == challengeid);
+        }
     }
 }

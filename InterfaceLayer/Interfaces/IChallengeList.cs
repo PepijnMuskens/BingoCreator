@@ -10,7 +10,8 @@ namespace InterfaceLayer.Interfaces
     {
         public int CreateChallengeList(string name, int userid, int gameid);
         public ChallengeListDTO GetChallengeList(int id, int userid);
-        public ChallengeDTO AddtoChallengelist(string disc, string statname, int value, int diff, int gameid);
+        public ChallengeDTO AddChallenge(string disc, string statname, int value, int diff, int gameid);
+        public ChallengeDTO AddToChallengeList(int challengelistid, int challengeid);
 
 
     }

@@ -115,6 +115,7 @@ namespace DataLayer
                 while (reader.Read())
                 {
                     ChallengeDTO dTO = new ChallengeDTO();
+                    dTO.Id = reader.GetInt32(0);
                     dTO.Discription = reader.GetString(1);
                     dTO.StatName = reader.GetString(2);
                     dTO.Value = reader.GetDouble(3);
