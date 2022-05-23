@@ -103,5 +103,18 @@ namespace SteamBingoCreatorService.Controllers
             return stats;
         }
 
+        [EnableCors("CorsPolicy")]
+        [HttpGet("EditChallenge")]
+        public Challenge EdditChallenge(int id, string discription, string statname)
+        {
+            Challenge challenge = new Challenge(new InterfaceLayer.DTO_s.ChallengeDTO { Id = id, Discription = discription, StatName = statname });
+            int result = challenge.Edit();
+            if(result == 1)
+            {
+                return challenge;
+            }
+            else { return null; }
+        }
+
     }
 }

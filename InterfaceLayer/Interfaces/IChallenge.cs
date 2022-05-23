@@ -9,7 +9,7 @@ namespace InterfaceLayer.Interfaces
     public interface IChallenge
     {
         public ChallengeDTO GetChallenge(int id);
-      
+        public int Edit(int id, string statname, string discription, int diff);
         
     }
 }

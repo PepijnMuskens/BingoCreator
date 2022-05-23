@@ -5,7 +5,7 @@ using MySql.Data.MySqlClient;
 
 namespace DataLayer
 {
-    public class ChallengeDAL : IChallengeList
+    public class ChallengeDAL : IChallengeList, IChallenge
     {
         private string connectionString = "Server=am1.fcomet.com;Uid=steambin_steambin;Database=steambin_Data;Pwd=Appels1peren0";
         //private string connectionString = "Server=studmysql01.fhict.local;Uid=dbi437675;Database=dbi437675;Pwd=1234";
@@ -140,6 +140,29 @@ namespace DataLayer
                 connection.Close();
             }
             return GetChallengeList(challengelistid, 1).Challenges.Find(c => c.Id == challengeid);
+        }
+
+        public ChallengeDTO GetChallenge(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Edit(int id, string statname, string discription, int diff)
+        {
+            try
+            {
+                connection.Open();
+                query = $"UPDATE `challenge` SET `Discription`='{discription}',`Statname`='{statname}' WHERE `Id` = {id}";
+                var cmd = new MySqlCommand(query, connection);
+                cmd.ExecuteNonQuery();
+                connection.Close();
+                return 1;
+            }
+            catch
+            {
+                connection.Close();
+                return 0;
+            }
         }
     }
 }

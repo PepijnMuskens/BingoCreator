@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using InterfaceLayer.DTO_s;
+using InterfaceLayer.Interfaces;
+
 namespace LogicLayer
 {
     public class Challenge
@@ -23,6 +25,12 @@ namespace LogicLayer
             Value = challengeDTO.Value;
             Difficulty = challengeDTO.Difficulty;
             Gameid = challengeDTO.Gameid;
+        }
+
+        public int Edit()
+        {
+            IChallenge Ichallenge = new DataLayer.ChallengeDAL();
+            return Ichallenge.Edit(Id, StatName, Discription, Difficulty);
         }
 
     }
