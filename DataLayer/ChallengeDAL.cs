@@ -7,10 +7,8 @@ namespace DataLayer
 {
     public class ChallengeDAL : IChallengeList, IChallenge
     {
-        private string connectionString = "Server=am1.fcomet.com;Uid=steambin_steambin;Database=steambin_Data;Pwd=Appels1peren0";
-        //private string connectionString = "Server=studmysql01.fhict.local;Uid=dbi437675;Database=dbi437675;Pwd=1234";
-        MySqlConnection connection;
-        string query = "";
+        private readonly string connectionString = "Server=am1.fcomet.com;Uid=steambin_steambin;Database=steambin_Data;Pwd=Appels1peren0";
+        readonly MySqlConnection connection;
 
         public ChallengeDAL()
         {
@@ -22,7 +20,7 @@ namespace DataLayer
             try
             {
                 connection.Open();
-                query = $"INSERT INTO `games`(`Id`, `Name`) VALUES ('{game.SteamId}','{game.Name}')";
+                string query = $"INSERT INTO `games`(`Id`, `Name`) VALUES ('{game.SteamId}','{game.Name}')";
                 var cmd = new MySqlCommand(query, connection);
                 cmd.ExecuteNonQuery();
             }
@@ -39,7 +37,7 @@ namespace DataLayer
             try
             {
                 connection.Open();
-                query = $"INSERT INTO `challenge`(`Discription`, `Statname`, `Value`, `Difficulty`, `GameId`) VALUES ('{disc}','{statname}',{value},{diff},{gameid})";
+                string query = $"INSERT INTO `challenge`(`Discription`, `Statname`, `Value`, `Difficulty`, `GameId`) VALUES ('{disc}','{statname}',{value},{diff},{gameid})";
                 var cmd = new MySqlCommand(query, connection);
                 cmd.ExecuteNonQuery();
                 connection.Close();
@@ -61,7 +59,7 @@ namespace DataLayer
             try
             {
                 connection.Open();
-                query = $"INSERT INTO `challengelist`(`Name`, `UserId`, `GameId`) VALUES ('{name}',{userid},{gameid})";
+                string query = $"INSERT INTO `challengelist`(`Name`, `UserId`, `GameId`) VALUES ('{name}',{userid},{gameid})";
                 var cmd = new MySqlCommand(query, connection);
                 cmd.ExecuteNonQuery();
                 connection.Close();
@@ -81,7 +79,7 @@ namespace DataLayer
             try
             {
                 connection.Open();
-                query = $"SELECT challengelist.Name, challenge.Id, challenge.Discription, challenge.Statname, challenge.Value, challenge.Difficulty, challenge.GameId FROM challengelistchallenge INNER JOIN challenge on challengelistchallenge.challengeId = challenge.Id INNER JOIN challengelist on challengelistchallenge.Challengelistid = challengelist.Id WHERE challengelistchallenge.Challengelistid = {id} AND challengelist.UserId = {userid} ORDER BY RAND();";
+                string query = $"SELECT challengelist.Name, challenge.Id, challenge.Discription, challenge.Statname, challenge.Value, challenge.Difficulty, challenge.GameId FROM challengelistchallenge INNER JOIN challenge on challengelistchallenge.challengeId = challenge.Id INNER JOIN challengelist on challengelistchallenge.Challengelistid = challengelist.Id WHERE challengelistchallenge.Challengelistid = {id} AND challengelist.UserId = {userid} ORDER BY RAND();";
                 var cmd = new MySqlCommand(query,connection);
                 var reader = cmd.ExecuteReader();
                 while (reader.Read())
@@ -126,11 +124,14 @@ namespace DataLayer
         public ChallengeDTO AddToChallengeList(int challengelistid, int challengeid)
         {
             ChallengeListDTO challengeList = GetChallengeList(challengelistid, 1);
-            if (challengeList.Challenges.Contains(challengeList.Challenges.Find(c => c.Id == challengeid))) return challengeList.Challenges.Find(c => c.Id == challengeid);
+            if (challengeList.Challenges.Contains(challengeList.Challenges.Find(c => c.Id == challengeid)))
+            {
+                return challengeList.Challenges.Find(c => c.Id == challengeid);
+            }
             try
             {
                 connection.Open();
-                query = $"INSERT INTO `challengelistchallenge`(`Challengelistid`, `challengeId`) VALUES ({challengelistid},{challengeid})";
+                string query = $"INSERT INTO `challengelistchallenge`(`Challengelistid`, `challengeId`) VALUES ({challengelistid},{challengeid})";
                 var cmd = new MySqlCommand(query, connection);
                 cmd.ExecuteNonQuery();
                 connection.Close();
@@ -152,7 +153,7 @@ namespace DataLayer
             try
             {
                 connection.Open();
-                query = $"UPDATE `challenge` SET `Discription`='{discription}',`Statname`='{statname}' WHERE `Id` = {id}";
+                string query = $"UPDATE `challenge` SET `Discription`='{discription}',`Statname`='{statname}' WHERE `Id` = {id}";
                 var cmd = new MySqlCommand(query, connection);
                 cmd.ExecuteNonQuery();
                 connection.Close();

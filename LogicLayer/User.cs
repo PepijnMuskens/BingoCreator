@@ -10,7 +10,7 @@ namespace LogicLayer
         public string SteamId { get; private set; }
         public string Email { get; private set; }
 
-        private IChallengeList IChallengeList;
+        private readonly IChallengeList IChallengeList;
 
         public User(UserDTO userDTO)
         {

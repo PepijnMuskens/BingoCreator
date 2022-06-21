@@ -8,12 +8,10 @@ namespace DataLayer
 {
     public class SteamGameDAL : ISteamGame , ISteamGames
     {
-        private string connectionString = "Server=am1.fcomet.com;Uid=steambin_steambin;Database=steambin_Data;Pwd=Appels1peren0";
-        //private string connectionString = "Server=studmysql01.fhict.local;Uid=dbi437675;Database=dbi437675;Pwd=1234";
-        MySqlConnection connection;
-        string query = "";
+        private readonly string connectionString = "Server=am1.fcomet.com;Uid=steambin_steambin;Database=steambin_Data;Pwd=Appels1peren0";
+        readonly MySqlConnection connection;
 
-        ChallengeDAL challengeDAL;
+        readonly ChallengeDAL challengeDAL;
 
         public SteamGameDAL()
         {
@@ -27,7 +25,7 @@ namespace DataLayer
             try
             {
                 connection.Open();
-                query = $"SELECT * FROM `games` WHERE Id = {id} OR Name = '{name}'";
+                string query = $"SELECT * FROM `games` WHERE Id = {id} OR Name = '{name}'";
                 var cmd1 = new MySqlCommand(query, connection);
                 if(cmd1.ExecuteScalar() != null)
                 {
@@ -44,8 +42,9 @@ namespace DataLayer
             }
             catch(Exception ex)
             {
-
+                connection.Close();
             }
+            connection.Close();
             return game;
         }
         public SteamGameDTO GetSteamgame(int id)
@@ -54,7 +53,7 @@ namespace DataLayer
             try
             {
                 connection.Open();
-                query = $"SELECT * FROM games WHERE Id = {id}";
+                string query = $"SELECT * FROM games WHERE Id = {id}";
                 var cmd = new MySqlCommand(query, connection);
                 var reader = cmd.ExecuteReader();
                 while (reader.Read())
@@ -81,7 +80,7 @@ namespace DataLayer
             try
             {
                 connection.Open();
-                query = "SELECT * FROM games";
+                string query = "SELECT * FROM games";
                 var cmd = new MySqlCommand(query, connection);
                 var reader = cmd.ExecuteReader();
                 while (reader.Read())
@@ -109,7 +108,7 @@ namespace DataLayer
             try
             {
                 connection.Open();
-                query = $"SELECT * FROM challenge WHERE GameId = {id}";
+                string query = $"SELECT * FROM challenge WHERE GameId = {id}";
                 var cmd = new MySqlCommand(query, connection);
                 var reader = cmd.ExecuteReader();
                 while (reader.Read())
@@ -145,7 +144,7 @@ namespace DataLayer
             try
             {
                 connection.Open();
-                query = $"SELECT * FROM challengelist WHERE GameId = {id}";
+                string query = $"SELECT * FROM challengelist WHERE GameId = {id}";
                 var cmd = new MySqlCommand(query, connection);
                 var reader = cmd.ExecuteReader();
                 while (reader.Read())

@@ -59,7 +59,7 @@ namespace SteamBingoCreatorService.Controllers
                 List<Challenge> challenges = JsonSerializer.Deserialize<List<Challenge>>(challengesJson);
                 foreach(Challenge challenge in challenges)
                 {
-                    
+                    challenges.Add(challenge);
                 }
             }
             catch

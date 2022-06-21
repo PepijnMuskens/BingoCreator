@@ -32,7 +32,10 @@ namespace SteamBingoCreatorService.Controllers
         [HttpPost("AddChallenge")]
         public async Task<Challenge> AddChallenge(string disc, string statname, int value, int diff, int gameid)
         {
-            if (value < 1 || value > 50 || diff > 3 || diff < 1) return null;
+            if (value < 1 || value > 50 || diff > 3 || diff < 1)
+            {
+                return null;
+            }
             ChallengeList challengeList = new ChallengeList();
             return await challengeList.AddChallenge(disc, statname, value, diff, gameid);
         }
